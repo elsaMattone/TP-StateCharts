@@ -54,6 +54,7 @@ const polylineMachine = createMachine(
                         },
                         Backspace: {
                             actions: "removeLastPoint",
+                            cond: "plusDeDeuxPoints",
                         },
                     },
                 },
@@ -121,7 +122,7 @@ const polylineMachine = createMachine(
             // On peut enlever un point
             plusDeDeuxPoints: (context, event) => {
                 // Deux coordonnées pour chaque point, plus le point provisoire
-                return polyline.points().length > 6;
+                return polyline.points().length > 4;
             },
         },
     }
