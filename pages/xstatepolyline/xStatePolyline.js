@@ -18,12 +18,47 @@ const polylineMachine = createMachine(
     {
         /** @xstate-layout N4IgpgJg5mDOIC5gF8A0IB2B7CdGgAcsAbATwBkBLDMfEI2SgF0qwzoA9EBaANnVI9eAOgAM4iZMkB2ZGnokK1MMMoRitJAsYs2nRABYATAMQAOAIzCD0gJwXetgwGZezgw9ty5QA */
         id: "polyLine",
-        initial: "idle",
-        states : {
-            idle: {
-            }
-        }
-    },
+            initial: "idle",
+            context: {
+                points: [], // Stocker les points de la polyline
+                provisionalPoint: null, // Stocker le point provisoire
+            },
+            states: {
+                idle: {
+                    on: {
+                        MOUSECLICK: {
+                            target: "addingPoint",
+                            actions: "createLine",
+                        },
+                    },
+                },
+                addingPoint: {
+                    on: {
+                        MOUSEMOVE: {
+                            target: "addingPoint",
+                            actions: "setLastPoint",
+                        },
+                        MOUSECLICK: {
+                            target: "addingPoint",
+                            cond: "pasPlein",
+                            actions: "addPoint",
+                        },
+                        Enter: {
+                            target: "idle",
+                            actions: "saveLine",
+                            cond: "plusDeDeuxPoints",
+                        },
+                        Escape: {
+                            target: "idle",
+                            actions: "abandon",
+                        },
+                        Backspace: {
+                            actions: "removeLastPoint",
+                        },
+                    },
+                },
+            },
+        },
     // Quelques actions et guardes que vous pouvez utiliser dans votre machine
     {
         actions: {
