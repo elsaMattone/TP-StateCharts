@@ -55,6 +55,7 @@ const polylineMachine = createMachine(
                         Backspace: {
                             actions: "removeLastPoint",
                             cond: "plusDeDeuxPoints",
+                           
                         },
                     },
                 },
